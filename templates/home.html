@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PDTA - Home</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#7b2626;
+      --card:#6e2a2a;
+      --muted:#f3dede;
+      --accent:#ff4c4c;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      margin:0;
+  font-family:Montserrat,sans-serif;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  color:#e5e7eb;
+}
+
+    /* HEADER */
+    header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+    .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+    .brand{
+      display:flex;align-items:center;gap:16px;
+    }
+    .logo img{width:100px;height:100px;border-radius:15 px}
+
+    .title h1{
+      font-family:'Playfair Display',serif;
+      font-size:42px;
+      color:#0d1b1b;
+      margin-bottom:4px;
+    }
+    .title p{
+      color:#2ecc71;
+      font-weight:600;
+      letter-spacing:1px;
+      font-size:16px;
+    }
+    .logout{
+      padding:10px 18px;
+      background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.3);
+      border-radius:30px;
+      color:white;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    /* MAIN CONTENT */
+    main{padding:20px 40px;}
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:40px;
+      margin-top:40px;
+      text-align:center;
+    }
+
+    .card img{
+      width:100%;
+      height:220px;
+      border-radius:20px;
+      object-fit:cover;
+      box-shadow:0 5px 18px rgba(0,0,0,0.4);
+    }
+
+    .card h3{
+      margin-top:12px;
+      color:var(--accent);
+      text-decoration:underline;
+      font-size:22px;
+    }
+
+    .card p{
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+      padding:0 10px;
+    }
+
+    .about-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top:40px;
+    }
+    .btn{
+      padding:12px 26px;
+      background:#3f2b2b;
+      color:white;
+      border:none;
+      border-radius:25px;
+      font-weight:700;
+      cursor:pointer;
+      border:2px solid rgba(255,255,255,0.2);
+    }
+
+    footer{
+      margin-top:40px;
+      padding:20px;
+      text-align:center;
+      color:rgba(255,255,255,0.6);
+      font-size:14px;
+    }
+
+    /* POPUP */
+    .popup-bg{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+    }
+    .popup{
+      background:white;
+      color:black;
+      padding:28px;
+      width:300px;
+      text-align:center;
+      border-radius:12px;
+      font-weight:600;
+    }
+    .popup button{
+      margin:10px;
+      padding:8px 20px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    #yesBtn{background:#d9534f;color:white;}
+    #noBtn{background:#777;color:white;}
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="logo"><img src="/static/main_logo.jpg" alt="Logo"></div>
+      <div class="title">
+        <h1>PDTA</h1>
+        <p>(Phishing Detection Technique Awareness)</p>
+      </div>
+    </div>
+
+    <button class="logout" id="logoutBtn">LogOut</button>
+  </header>
+
+  <!-- MAIN AREA -->
+  <main>
+
+    <div class="cards">
+
+      <!-- TYPES OF PHISHING -->
+      <a href="/types" style="text-decoration:none;color:white;">
+      <div class="card">
+        <img src="/static/Types.jpg">
+        <h3>Types of Phishing</h3>
+        <p>Types of phishing include email phishing, SMS phishing, and fake call phishing.</p>
+      </div>
+      </a>
+      <!-- REAL WORLD EXAMPLE -->
+      <a href="/fakesite" style="text-decoration:none;color:white;">
+      <div class="card">
+        <img src="/static/real_world.jpg">
+        <h3>Real world example</h3>
+        <p>List your offers, promos, or membership perks to entice users to click.</p>
+      </div>
+      </a>
+
+      <!-- URL SCANNER -->
+      <a href="/urlscanner" style="text-decoration:none;color:white;">
+      <div class="card">
+        <img src="/static/ChatGPT Image Dec 12, 2025, 08_37_52 AM.png">
+        <h3><b>URL SCANNER</b></h3>
+        <p>A scanner to detect phishing or unsafe websites before opening.</p>
+      </div>
+      </a>
+
+    </div>
+
+    <div class="about-wrap">
+      <button class="btn" id="aboutBtn">About US</button>
+    </div>
+
+  </main>
+
+  <footer>&copy; PDTA — Phishing Awareness & Detection</footer>
+
+  <!-- POPUP -->
+  <div class="popup-bg" id="popupBg">
+    <div class="popup">
+      <p>Are you sure you want to Log Out?</p>
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
+    const popupBg = document.getElementById("popupBg");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+
+    logoutBtn.onclick = () => popupBg.style.display = "flex";
+    noBtn.onclick = () => popupBg.style.display = "none";
+
+    yesBtn.onclick = () => {
+        window.location.href = "/logout";  // FIXED
+    };
+
+    document.getElementById("aboutBtn").onclick = () => {
+        window.location.href = "/aboutus";
+    };
+</script>
+
+</body>
+</html>

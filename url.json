@@ -1,0 +1,326 @@
+[
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://127.0.0.1:5000/urlscanner",
+        "status": "safe"
+    },
+    {
+        "url": "https://resumeworded.com/",
+        "status": "safe"
+    },
+    {
+        "url": "https://resumeworded.com/",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://chatgpt.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://192.168.0.23/login",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://google.com@evil.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://127.0.0.1:5000/urlscanner",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://127.0.0.1:5000/urlscanner",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://127.0.0.1:5000/urlscanner",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.org",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.org",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://chatgpt.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://secure-login-example.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://sbi-secure-verification-test.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://chatgpt.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://chatgpt.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://chatgpt.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://chatgpt.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://chatgpt.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://example.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://example.com/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.arpit.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://www.bbzwe.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://facebook.com",
+        "status": "safe"
+    }
+]

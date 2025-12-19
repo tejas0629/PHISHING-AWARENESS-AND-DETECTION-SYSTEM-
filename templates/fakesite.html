@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KYC Verification</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+        }
+
+        /* TOP NAV BAR */
+        .top-bar {
+            background: #0b006b;
+            padding: 12px 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo {
+    height: 40px;
+    margin-right: 150px;
+}
+
+
+        .top-bar h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg,#0b006b, #0b006b);
+            padding: 45px 20px;
+            color: white;
+            text-align: center;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .hero-sub {
+            margin-top: 5px;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .note-box-hero {
+            background: #ffffff;
+            color: #333;
+            padding: 12px 18px;
+            margin: 22px auto 0;
+            border-radius: 8px;
+            width: 75%;
+            font-size: 15px;
+            border-left: 5px solid #f4c542;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+        }
+
+        /* MAIN FORM */
+        .container {
+            width: 60%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .sub-heading {
+            font-size: 22px;
+            font-weight: bold;
+            color: #003b6f;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0b006b;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #0b006b;
+        }
+    </style>
+
+    <script>
+        function submitForm() {
+            alert("KYC Verification Completed Successfully!");
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+<div class="top-bar">
+    <div class="left-section">
+        <img src="/static/logo.png" class="logo">
+        <span class="bank-name"> </span>
+    </div>
+</div>
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <h1>KYC Verification Portal</h1>
+        <p class="hero-sub">Secure • Fast • Verified</p>
+
+        <div class="note-box-hero">
+            <b>Note:</b> If slowness is observed during the KYC page, please refresh the page for a better experience.
+        </div>
+    </div>
+
+    <!-- MAIN FORM -->
+    <div class="container">
+
+    <div class="sub-heading">KYC Verification Details</div>
+
+    <form id="kycForm">
+        <label>Account Holder Name</label>
+        <input type="text" placeholder="Enter account holder name" required>
+
+        <label>Bank Account Number</label>
+        <input type="number" placeholder="Enter bank account number" required>
+
+        <label>IFSC Number</label>
+        <input type="text" placeholder="Enter IFSC number" required>
+
+        <label>PAN Number</label>
+        <input type="text" placeholder="Enter PAN number" required>
+
+        <label>Aadhar Number</label>
+        <input type="number" placeholder="Enter Aadhar number" required>
+
+        <hr style="margin:20px 0;">
+
+        <div class="sub-heading">Debit Card Activation</div>
+
+        <label>Card Number</label>
+        <input type="number" placeholder="Enter debit card number" required>
+
+        <label>Card Holder Name</label>
+        <input type="text" placeholder="Enter card holder name" required>
+
+        <label>CVV</label>
+        <input type="password" placeholder="Enter CVV" required>
+
+        <label>Phone Number</label>
+        <input type="number" placeholder="Enter phone number" required>
+
+        <!-- SUBMIT BUTTON MUST BE INSIDE FORM -->
+        <button class="submit-btn" type="submit">Submit</button>
+    </form>
+</div>
+
+
+</body>
+</html>

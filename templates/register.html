@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 900px;
+            height: 520px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.15);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .form-box {
+            width: 50%;
+            padding: 60px 45px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .form-box h2 {
+            margin-bottom: 20px;
+            color: #020617;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .form-box input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 7px;
+            border: 1px solid #e0e0e0;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #cc001f;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn:hover {
+            background: #020617;
+        }
+
+        .side-box {
+            width: 50%;
+            color: #fff;
+            padding: 90px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideLeft 0.7s ease forwards;
+            background: #020617;
+        }
+
+        @keyframes slideLeft {
+            from { transform: translateX(80px); opacity: 0; }
+            to   { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-box register-box">
+        <h2>Create Account</h2>
+
+        <form method="POST">
+            <input type="text" name="name" placeholder="Enter Full Name" required>
+
+            <input type="text" name="username" placeholder="Create Username" required>
+
+            <input type="email" name="email" placeholder="Enter Email" required>
+
+            <input type="password" name="password" placeholder="Create Password" required>
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+
+        <p class="switch">Already have an account?
+            <a href="/" class="switch-btn">Login</a>
+        </p>
+    </div>
+
+    <div class="side-box">
+        <h2>Hello, Friend!</h2>
+        <p>Join our secure platform and detect phishing attacks easily.</p>
+    </div>
+
+</div>
+
+<script>
+    console.log("Register Page Loaded");
+</script>
+
+</body>
+</html>

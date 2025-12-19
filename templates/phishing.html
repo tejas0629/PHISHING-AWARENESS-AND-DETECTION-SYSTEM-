@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDTA – Types of Phishing</title>
+
+<style>
+body{
+    margin:0;
+  font-family:Montserrat,sans-serif;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  color:#e5e7eb;
+}
+.header{
+    text-align:center;
+    padding:30px;
+}
+.header p{color:#6dff6d}
+
+.container{
+    width:85%;
+    max-width:1100px;
+    margin:30px auto;
+    background:#6f2424;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+h2{border-bottom:2px solid #ff4b4b}
+
+.type-section{
+    background:#822b2b;
+    padding:25px;
+    border-radius:18px;
+    margin-bottom:25px;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.type-section h3{color:#ff4b4b}
+
+.phishing-details{
+    display:none;
+    margin-top:15px;
+    line-height:1.6;
+}
+
+.read-more-btn{
+    background:#ff4b4b;
+    color:white;
+    border:none;
+    padding:8px 18px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.back-btn{
+    padding:12px 30px;
+    background:#ff4b4b;
+    color:white;
+    text-decoration:none;
+    border-radius:25px;
+    font-weight:bold;
+}
+.footer{text-align:center;padding:20px;color:#ddd}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>PDTA</h1>
+<p>Phishing Detection Technique Awareness</p>
+</div>
+
+<div class="container">
+
+<h2>What is Phishing?</h2>
+<p>
+Phishing is a cyber-attack technique where attackers impersonate trusted organizations
+to trick users into revealing sensitive information like passwords, OTPs, banking details,
+or personal data.
+</p>
+
+<h2>Types of Phishing</h2>
+
+<!-- EMAIL PHISHING -->
+<div class="type-section">
+<h3>📧 Email Phishing</h3>
+<p>Fake emails pretending to be from trusted companies.</p>
+<button class="read-more-btn" onclick="toggleDetails('email')">Read More</button>
+<div class="phishing-details" id="email">
+<p><b>How it works:</b></p>
+<ul>
+<li>Attackers send emails appearing from banks, Netflix, Amazon, etc.</li>
+<li>Emails create urgency like “Account Suspended” or “Verify Now”.</li>
+<li>Victims are redirected to fake login pages.</li>
+</ul>
+<p><b>Example:</b>  
+<code>support@secure-netflix-login.xyz</code></p>
+<p><b>Prevention:</b></p>
+<ul>
+<li>Check sender email carefully</li>
+<li>Never click unknown links</li>
+<li>Enable email spam filters</li>
+</ul>
+</div>
+</div>
+
+<!-- SMISHING -->
+<div class="type-section">
+<h3>📱 Smishing (SMS Phishing)</h3>
+<p>Phishing attacks via SMS or WhatsApp.</p>
+<button class="read-more-btn" onclick="toggleDetails('sms')">Read More</button>
+<div class="phishing-details" id="sms">
+<p><b>How it works:</b></p>
+<ul>
+<li>Fake SMS claiming prize wins or delivery failure</li>
+<li>Contains shortened or suspicious URLs</li>
+</ul>
+<p><b>Example:</b>  
+“Your parcel is on hold. Click here to verify: bit.ly/xxxx”</p>
+<p><b>Prevention:</b></p>
+<ul>
+<li>Do not click SMS links</li>
+<li>Verify directly on official apps</li>
+<li>Block unknown numbers</li>
+</ul>
+</div>
+</div>
+
+<!-- VISHING -->
+<div class="type-section">
+<h3>📞 Vishing (Voice Phishing)</h3>
+<p>Fraud calls impersonating officials.</p>
+<button class="read-more-btn" onclick="toggleDetails('voice')">Read More</button>
+<div class="phishing-details" id="voice">
+<p><b>How it works:</b></p>
+<ul>
+<li>Caller pretends to be bank officer or police</li>
+<li>Creates fear of account block or legal action</li>
+</ul>
+<p><b>Example:</b>  
+“Your ATM card is blocked, share OTP to reactivate.”</p>
+<p><b>Prevention:</b></p>
+<ul>
+<li>Never share OTP on calls</li>
+<li>Banks never ask passwords</li>
+<li>Disconnect suspicious calls</li>
+</ul>
+</div>
+</div>
+
+<!-- SPEAR PHISHING -->
+<div class="type-section">
+<h3>🎯 Spear Phishing</h3>
+<p>Targeted phishing using personal information.</p>
+<button class="read-more-btn" onclick="toggleDetails('spear')">Read More</button>
+<div class="phishing-details" id="spear">
+<p><b>How it works:</b></p>
+<ul>
+<li>Attacker researches victim (job, company)</li>
+<li>Email looks highly personalized</li>
+</ul>
+<p><b>Example:</b>  
+“Hello Tejas, here is your project document.”</p>
+<p><b>Prevention:</b></p>
+<ul>
+<li>Verify sender internally</li>
+<li>Use two-factor authentication</li>
+</ul>
+</div>
+</div>
+
+<!-- WHALING -->
+<div class="type-section">
+<h3>🐳 Whaling</h3>
+<p>Phishing targeting top executives.</p>
+<button class="read-more-btn" onclick="toggleDetails('whale')">Read More</button>
+<div class="phishing-details" id="whale">
+<p><b>How it works:</b></p>
+<ul>
+<li>Targets CEO, CFO, managers</li>
+<li>Requests urgent wire transfers</li>
+</ul>
+<p><b>Example:</b>  
+“Immediate fund transfer needed for confidential deal.”</p>
+<p><b>Prevention:</b></p>
+<ul>
+<li>Multi-level approval system</li>
+<li>Verify financial requests</li>
+</ul>
+</div>
+</div>
+
+<div style="text-align:center;margin-top:40px">
+<a href="/home" class="back-btn">⬅ Back to Home</a>
+</div>
+
+</div>
+
+<div class="footer">
+© 2025 PDTA – Phishing Awareness & Detection
+</div>
+
+<script>
+function toggleDetails(id){
+    const el=document.getElementById(id);
+    el.style.display = el.style.display==="block" ? "none" : "block";
+}
+</script>
+
+</body>
+</html>

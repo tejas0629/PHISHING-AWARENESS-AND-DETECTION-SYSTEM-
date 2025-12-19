@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <style>
+        /* Global */
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            width: 900px;
+            height: 520px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.15);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Form box */
+        .form-box {
+            width: 50%;
+            padding: 60px 45px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .form-box h2 {
+            margin-bottom: 20px;
+            color: #020617;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .form-box input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 7px;
+            border: 1px solid #e0e0e0;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #e60023;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn:hover {
+            background: #020617;
+        }
+
+        .captcha-text {
+            font-size: 20px;
+            letter-spacing: 3px;
+            background: #eee;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        /* Red side box */
+        .side-box {
+            width: 50%;
+            color: #fff;
+            padding: 90px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideRight 0.7s ease forwards;
+            background: #020617;
+        }
+
+        @keyframes slideRight {
+            from { transform: translateX(-80px); opacity: 0; }
+            to   { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="form-box login-box">
+        <h2>Login</h2>
+
+        <form action="/auth" method="POST">
+            <input type="text" name="username" placeholder="Enter Username" required>
+
+            <input type="password" name="password" placeholder="Enter Password" required>
+
+            <input type="text" name="captcha_input" placeholder="Enter CAPTCHA" required>
+
+            <p class="captcha-text">{{ captcha }}</p>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <p class="switch">Don’t have an account?
+            <a href="/register" class="switch-btn">Register</a>
+        </p>
+    </div>
+
+    <div class="side-box">
+        <h2>Welcome Back!</h2>
+        <p>Secure Login | CAPTCHA Enabled | Email Verified Accounts</p>
+    </div>
+</div>
+
+<script>
+    console.log("Login Page Loaded");
+</script>
+
+</body>
+</html>
