@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify it's you</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background:#f5f7fa;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+        .card {
+            background:white;
+            padding:30px;
+            width:350px;
+            border-radius:10px;
+            box-shadow:0 0 20px rgba(0,0,0,0.15);
+            text-align:center;
+        }
+        input {
+            width:100%;
+            padding:10px;
+            margin:15px 0;
+            font-size:16px;
+        }
+        button {
+            width:100%;
+            padding:10px;
+            background:#1a73e8;
+            color:white;
+            border:none;
+            font-size:16px;
+            cursor:pointer;
+        }
+        .resend {
+            margin-top:15px;
+            font-size:14px;
+        }
+        .resend a {
+            color:#1a73e8;
+            text-decoration:none;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Verify it's you</h2>
+    <p>An OTP has been sent to your email</p>
+
+    <form method="POST">
+        <input type="text" name="otp" placeholder="Enter OTP" required>
+        <button type="submit">Verify</button>
+    </form>
+
+    <div class="resend">
+        Didn’t receive OTP?
+        <a href="/resend-otp">Resend</a>
+    </div>
+</div>
+
+</body>
+</html>

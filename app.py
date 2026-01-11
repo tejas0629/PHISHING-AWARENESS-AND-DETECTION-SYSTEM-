@@ -1,33 +1,35 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
 from flask_mail import Mail, Message
+from urllib.parse import urlparse
+from datetime import datetime
+from dotenv import load_dotenv
 import random
 import json
 import os
 import requests
 import socket
-from urllib.parse import urlparse
 import time
+from flask import session, send_file
 
 
+# Load .env variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "secret123"
-# ---------- FREE HYBRID URL ANALYZER (no external API) ----------
-from flask import Flask, render_template, request, redirect, session
-from flask_mail import Mail, Message
-import random
-import json
-import os
-import requests
-import socket
-from urllib.parse import urlparse
-import time
+app.secret_key = os.getenv("SECRET_KEY", "secret123")  # fallback if not set
 
+# Configure mail
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD")
+)
+mail = Mail(app)
 
+# -------------------- Utilities --------------------
 
-app = Flask(__name__)
-app.secret_key = "secret123"
-# ---------- FREE HYBRID URL ANALYZER (no external API) ----------
 def analyze_url(url, timeout=6):
     """
     Returns: (status, reasons)
@@ -39,7 +41,8 @@ def analyze_url(url, timeout=6):
 
     # Basic URL check
     if not parsed.scheme or not parsed.netloc:
-        return "suspicious", ["Malformed URL"]
+        reasons.append("Malformed URL")
+        return "suspicious", reasons  # Malformed URL is fatal, can stop
 
     domain = parsed.hostname or ""
     domain = domain.lower()
@@ -48,7 +51,7 @@ def analyze_url(url, timeout=6):
     try:
         socket.gethostbyname(domain)
     except Exception:
-        return "suspicious", ["Domain does not exist (DNS lookup failed)"]
+        reasons.append("Domain does not exist (DNS lookup failed)")
 
     # 2) Suspicious TLDs
     bad_tlds = {"xyz", "top", "zip", "click", "work", "club", "info", "bid", "icu"}
@@ -65,7 +68,6 @@ def analyze_url(url, timeout=6):
         reasons.append("Too many subdomains")
 
     # 5) IP address URL
-    # domain like '192.168.0.1' -> suspicious
     parts = domain.split('.')
     if len(parts) == 4 and all(p.isdigit() for p in parts):
         reasons.append("Uses raw IP address")
@@ -73,7 +75,8 @@ def analyze_url(url, timeout=6):
     # 6) HTTP request: response, redirects, ssl
     try:
         start = time.time()
-        r = requests.get(url, timeout=timeout, allow_redirects=True, headers={"User-Agent": "PDTA-Scanner/1.0"})
+        r = requests.get(url, timeout=timeout, allow_redirects=True,
+                         headers={"User-Agent": "PDTA-Scanner/1.0"})
         elapsed = time.time() - start
 
         if elapsed > timeout:
@@ -90,113 +93,104 @@ def analyze_url(url, timeout=6):
         base = domain.replace("www.", "")
         final = final_domain.replace("www.", "")
 
-        if base != final:
-            trusted_big_sites = {
-                "google.com",
-    "youtube.com",
-    "facebook.com",
-    "instagram.com",
-    "twitter.com",
-    "x.com",
-    "amazon.com",
-    "microsoft.com",
-    "openai.com",
-    "chatgpt.com"
-            }
-            # If final contains any trusted site substring, allow it
-            if not any(t in final for t in trusted_big_sites):
-                reasons.append("Redirects to a different domain")
+        trusted_big_sites = {
+            "google.com", "youtube.com", "facebook.com", "instagram.com",
+            "twitter.com", "x.com", "amazon.com", "microsoft.com",
+            "openai.com", "chatgpt.com", "linkedin.com"
+        }
+
+        if base != final and not any(t in final for t in trusted_big_sites):
+            reasons.append("Redirects to a different domain")
 
     except requests.exceptions.Timeout:
-        return "suspicious", ["Connection timed out"]
+        reasons.append("Connection timed out")
     except requests.exceptions.SSLError:
-        return "suspicious", ["SSL/TLS certificate error"]
+        reasons.append("SSL/TLS certificate error")
     except requests.exceptions.RequestException as e:
-        # network-level error
-        return "suspicious", [f"Network/request error: {e}"]
+        reasons.append(f"Network/request error: {e}")
 
     # Final decision: if any reasons -> suspicious, else safe
-    if reasons:
-        return "suspicious", reasons
-    return "safe", ["No issues detected"]
+    return ("suspicious", reasons) if reasons else ("safe", ["No issues detected"])
 
 def save_url_result(url, status):
     file_path = "url.json"
+    data = []
 
-    # Load existing data (must be a list)
     if os.path.exists(file_path):
-        with open(file_path, "r") as f:
-            try:
+        try:
+            with open(file_path, "r") as f:
                 data = json.load(f)
                 if not isinstance(data, list):
-                    data = []  # Fix wrong format
-            except:
-                data = []
-    else:
-        data = []
+                    data = []
+        except:
+            data = []
 
-    # Add new record
     data.append({"url": url, "status": status})
-
-    # Save back
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
 
+
 def load_users():
     if os.path.exists("users.json"):
-        with open("users.json", "r") as f:
-            try:
+        try:
+            with open("users.json", "r") as f:
                 return json.load(f)
-            except:
-                return {}
+        except:
+            return {}
     return {}
+
 
 def save_users():
     with open("users.json", "w") as f:
         json.dump(users, f, indent=4)
 
-users = load_users()
-
 
 def generate_otp():
     return "".join(random.choices("0123456789", k=6))
+
 
 def generate_captcha(length=6):
     chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     return ''.join(random.choices(chars, k=length))
 
+
+users = load_users()
+
+# -------------------- Routes --------------------
+
 @app.route("/")
 def login():
-    captcha = generate_captcha()       # generate CAPTCHA
-    session["captcha"] = captcha       # store in session
+    captcha = generate_captcha()
+    session["captcha"] = captcha
     return render_template("login.html", captcha=captcha)
 
 
 @app.route("/register", methods=["GET","POST"])
 def register():
-    if request.method=="POST":
+    if request.method == "POST":
         name = request.form["name"]
         username = request.form["username"]
-        email = request.form["email"]  # Add email input in register form
+        email = request.form["email"]
         password = request.form["password"]
-        
-        otp = "".join(random.choices("0123456789", k=6))
+
+        otp = generate_otp()
         session["temp_user"] = {"name": name, "username": username, "password": password, "email": email, "otp": otp}
 
-        # Send OTP to email
-        msg = Message(subject="Your OTP for Phishing Awareness ",
-                      sender=app.config['MAIL_USERNAME'],
-                      recipients=[email])
-        msg.body = f"Hello {name},\n\nYour OTP for registration is for Phishing awareness and detection system: {otp}\n\nDo not share it with anyone."
+        msg = Message(
+            subject="Your OTP for Phishing Awareness",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[email]
+        )
+        msg.body = f"Hello {name},\n\nYour OTP for registration is: {otp}\n\nDo not share it with anyone."
         mail.send(msg)
 
-        return render_template("verify.html")  # Remove demo OTP display
+        return render_template("verify.html")
     return render_template("register.html")
 
 
 @app.route("/verify", methods=["POST"])
 def verify():
-    u=session.get("temp_user")
+    u = session.get("temp_user")
     if not u: 
         return redirect("/register")
 
@@ -207,11 +201,12 @@ def verify():
             "email": u["email"],
             "password": u["password"]
         }
-
-        save_users()   # <-- Save to JSON file
+        save_users()
         session.pop("temp_user")
         return redirect("/")
     return "Invalid OTP"
+
+
 @app.route("/auth", methods=["POST"])
 def auth():
     user = request.form["username"]
@@ -219,12 +214,46 @@ def auth():
     captcha_input = request.form["captcha_input"]
 
     if captcha_input != session.get("captcha"):
-        return "CAPTCHA incorrect! Go back and try again."
+        return "CAPTCHA incorrect!"
 
-    if user in users and users[user]["password"]==pw:
-        session["user"] = user
-        return redirect("/home")
+    if user in users and users[user]["password"] == pw:
+        otp = generate_otp()
+        session["otp_user"] = user
+        session["login_otp"] = otp
+
+        email = users[user]["email"]
+        msg = Message(
+            subject="Login Verification OTP",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[email]
+        )
+        msg.body = f"""
+Hello {users[user]['name']},
+
+We detected a login attempt.
+
+Your OTP is: {otp}
+
+If this was you, enter the OTP to continue.
+If not, please ignore this email.
+"""
+        mail.send(msg)
+        return redirect("/verify-login")
+
     return "Invalid login"
+
+
+@app.route("/verify-login", methods=["GET", "POST"])
+def verify_login():
+    if request.method == "POST":
+        user_otp = request.form["otp"]
+        if user_otp == session.get("login_otp"):
+            session["user"] = session.get("otp_user")
+            session.pop("login_otp", None)
+            session.pop("otp_user", None)
+            return redirect("/home")
+        return "Invalid OTP"
+    return render_template("verify_login.html")
 
 
 @app.route("/home")
@@ -232,13 +261,16 @@ def home():
     if "user" not in session: return redirect("/")
     return render_template("home.html", user=session["user"])
 
-@app.route('/fakesite')
+
+@app.route("/fakesite")
 def fakesite():
     return render_template("fakesite.html")
 
-@app.route('/types')
+
+@app.route("/types")
 def types():
     return render_template("phishing.html")
+
 
 @app.route("/urlscanner")
 def urlscanner():
@@ -248,33 +280,72 @@ def urlscanner():
     except:
         history = []
 
-    return render_template("urlscanner.html", history=history)
+    safe_count = sum(1 for h in history if h.get("status") == "safe")
+    suspicious_count = sum(1 for h in history if h.get("status") == "suspicious")
 
-@app.route("/scan_url", methods=["POST"])
-def scan_url():
-    url = request.form.get("url_input", "").strip()
+    return render_template(
+        "urlscanner.html",
+        history=history,
+        safe_count=safe_count,
+        suspicious_count=suspicious_count,
+        total=len(history)
+    )
+@app.route("/export_pdf", methods=["POST"])
+def export_pdf():
+    from reportlab.lib.pagesizes import A4
+    from reportlab.pdfgen import canvas
+    from flask import send_file
 
-    if not url:
-        return render_template("urlscanner.html", error="⚠ Please enter a URL!")
-
-    # Auto-add scheme if missing
-    if not url.startswith("http://") and not url.startswith("https://"):
-        url = "https://" + url
-
-    # Run analyzer
-    status, reasons = analyze_url(url)
-
-    # Save to url.json (status stored as "safe"/"suspicious")
-    save_url_result(url, status)
-
-    # Load history
     try:
         with open("url.json", "r") as f:
             history = json.load(f)
     except:
         history = []
 
-    # Counts (optional, used by templates that show safe/suspicious counts)
+    if not history:
+        return "No scan history available", 400
+
+    file_path = "scan_report.pdf"
+    c = canvas.Canvas(file_path, pagesize=A4)
+    width, height = A4
+
+    y = height - 50
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, y, "URL Detection Summary")
+    y -= 30
+
+    c.setFont("Helvetica", 11)
+
+    for i, item in enumerate(history, start=1):
+        line = f"{i}. {item.get('url','')}  -  {item.get('status','').upper()}"
+        c.drawString(50, y, line)
+        y -= 18
+        if y < 50:
+            c.showPage()
+            y = height - 50
+            c.setFont("Helvetica", 11)
+
+    c.save()
+    return send_file(file_path, as_attachment=True)
+
+
+@app.route("/scan_url", methods=["POST"])
+def scan_url():
+    url = request.form.get("url_input", "").strip()
+    if not url:
+        return render_template("urlscanner.html", error="⚠ Please enter a URL!")
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+
+    status, reasons = analyze_url(url)
+    save_url_result(url, status)
+
+    try:
+        with open("url.json", "r") as f:
+            history = json.load(f)
+    except:
+        history = []
+
     safe_count = sum(1 for e in history if e.get("status", "").lower() == "safe")
     suspicious_count = sum(1 for e in history if e.get("status", "").lower() == "suspicious")
 
@@ -288,245 +359,63 @@ def scan_url():
         suspicious_count=suspicious_count
     )
 
-    # Save to url.json
-    save_url_result(url, status)
-
-    # Load history
-    try:
-        with open("url.json", "r") as f:
-            history = json.load(f)
-    except:
-        history = []
-
-    return render_template(
-        "urlscanner.html",
-        scanned_url=url,
-        result=status,
-        reasons=reasons,
-        history=history
-    )
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
-@app.route('/aboutus')
-def aboutus():
-    return render_template("aboutus.html")
 
-# Configure mail
-app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
-    MAIL_USE_TLS=True,
-    MAIL_USERNAME='tejasupreti2964@gmail.com',  
-    MAIL_PASSWORD='tlnf tmjy hffz tilr '      
-)
+@app.route("/submit_kyc", methods=["POST"])
+def submit_kyc():
+    name = request.form.get("account_name")
+    account = request.form.get("account_number")
+    phone = request.form.get("phone")
+    email = request.form.get("email")
+    current_time = datetime.now().strftime("%d-%m-%Y %I:%M %p")
 
-mail = Mail(app)
+    kyc_data = {"name": name, "account": account, "phone": phone, "email": email, "time": current_time}
 
+    file = "kycdetail.json"
+    data = []
 
-if __name__=="__main__":
-    app.run(debug=True)
-
-def save_url_result(url, status):
-    file_path = "url.json"
-
-    # Load existing data (must be a list)
-    if os.path.exists(file_path):
-        with open(file_path, "r") as f:
-            try:
+    if os.path.exists(file):
+        try:
+            with open(file, "r") as f:
                 data = json.load(f)
-                if not isinstance(data, list):
-                    data = []  # Fix wrong format
-            except:
-                data = []
-    else:
-        data = []
+        except:
+            data = []
 
-    # Add new record
-    data.append({"url": url, "status": status})
-
-    # Save back
-    with open(file_path, "w") as f:
+    data.append(kyc_data)
+    with open(file, "w") as f:
         json.dump(data, f, indent=4)
 
-def load_users():
-    if os.path.exists("users.json"):
-        with open("users.json", "r") as f:
-            try:
-                return json.load(f)
-            except:
-                return {}
-    return {}
-
-def save_users():
-    with open("users.json", "w") as f:
-        json.dump(users, f, indent=4)
-
-users = load_users()
-
-
-def generate_otp():
-    return "".join(random.choices("0123456789", k=6))
-
-def generate_captcha(length=6):
-    chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-    return ''.join(random.choices(chars, k=length))
-
-@app.route("/")
-def login():
-    captcha = generate_captcha()       # generate CAPTCHA
-    session["captcha"] = captcha       # store in session
-    return render_template("login.html", captcha=captcha)
-
-
-@app.route("/register", methods=["GET","POST"])
-def register():
-    if request.method=="POST":
-        name = request.form["name"]
-        username = request.form["username"]
-        email = request.form["email"]  # Add email input in register form
-        password = request.form["password"]
-        
-        otp = "".join(random.choices("0123456789", k=6))
-        session["temp_user"] = {"name": name, "username": username, "password": password, "email": email, "otp": otp}
-
-        # Send OTP to email
-        msg = Message(subject="Your OTP for Phishing Awareness ",
-                      sender=app.config['MAIL_USERNAME'],
-                      recipients=[email])
-        msg.body = f"Hello {name},\n\nYour OTP for registration is for Phishing awareness and detection system: {otp}\n\nDo not share it with anyone."
-        mail.send(msg)
-
-        return render_template("verify.html")  # Remove demo OTP display
-    return render_template("register.html")
-
-
-@app.route("/verify", methods=["POST"])
-def verify():
-    u=session.get("temp_user")
-    if not u: 
-        return redirect("/register")
-
-    if request.form["otp"] == u["otp"]:
-        users[u["username"]] = {
-            "name": u["name"],
-            "username": u["username"],
-            "email": u["email"],
-            "password": u["password"]
-        }
-
-        save_users()   # <-- Save to JSON file
-        session.pop("temp_user")
-        return redirect("/")
-    return "Invalid OTP"
-@app.route("/auth", methods=["POST"])
-def auth():
-    user = request.form["username"]
-    pw = request.form["password"]
-    captcha_input = request.form["captcha_input"]
-
-    if captcha_input != session.get("captcha"):
-        return "CAPTCHA incorrect! Go back and try again."
-
-    if user in users and users[user]["password"]==pw:
-        session["user"] = user
-        return redirect("/home")
-    return "Invalid login"
-
-
-@app.route("/home")
-def home():
-    if "user" not in session: return redirect("/")
-    return render_template("home.html", user=session["user"])
-
-@app.route('/fakesite')
-def fakesite():
-    return render_template("fakesite.html")
-
-@app.route('/types')
-def types():
-    return render_template("phishing.html")
-
-@app.route("/urlscanner", methods=["GET", "POST"])
-def urlscanner():
-    if request.method == "POST":
-        return scan_url()
-
-    try:
-        with open("url.json", "r") as f:
-            history = json.load(f)
-    except:
-        history = []
-
-    return render_template("urlscanner.html", history=history)
-
-@app.route("/scan_url", methods=["POST"])
-def scan_url():
-    url = request.form.get("url_input", "").strip()
-
-    if not url:
-        return render_template("urlscanner.html", error="⚠ Please enter a URL!")
-
-    if not url.startswith(("http://", "https://")):
-        url = "https://" + url
-
-    status, reasons = analyze_url(url)
-    save_url_result(url, status)
-
-    try:
-        with open("url.json", "r") as f:
-            history = json.load(f)
-    except:
-        history = []
-
-    return render_template(
-        "urlscanner.html",
-        scanned_url=url,
-        result=status,
-        reasons=reasons,
-        history=history
+    msg = Message(
+        subject="SBI Alert: KYC Verification Successful",
+        sender=app.config['MAIL_USERNAME'],
+        recipients=[email]
     )
+    msg.body = f"""
+Dear {name},
 
-    # Save to url.json
-    save_url_result(url, status)
+Your KYC verification is successful.
+Account Number: {account}
+Time: {current_time}
 
-    # Load history
-    try:
-        with open("url.json", "r") as f:
-            history = json.load(f)
-    except:
-        history = []
+Your Debit/Credit card is now active.
 
-    return render_template(
-        "urlscanner.html",
-        scanned_url=url,
-        result=status,
-        reasons=reasons,
-        history=history
-    )
+Thank you,
+Team SBI
+"""
+    mail.send(msg)
+    return jsonify({"success": True})
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/")
 
-@app.route('/aboutus')
+@app.route("/aboutus")
 def aboutus():
     return render_template("aboutus.html")
 
-# Configure mail
-app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
-    MAIL_USE_TLS=True,
-    MAIL_USERNAME='tejasupreti2964@gmail.com',  
-    MAIL_PASSWORD='tlnf tmjy hffz tilr '      
-)
 
-mail = Mail(app)
-
+# -------------------- Run App --------------------
 if __name__ == "__main__":
     app.run(debug=True)

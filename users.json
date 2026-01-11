@@ -1,10 +1,4 @@
 {
-    "tejas0629": {
-        "name": "TEJAS",
-        "username": "tejas0629",
-        "email": "pahadinest@gmail.com",
-        "password": "Tejas"
-    },
     "amit11": {
         "email": "amitagarwalrkt@gmail.com",
         "name": "Amit Agarwal ",
@@ -17,5 +11,35 @@
         "username": "arpitlohani777",
         "email": "arpitlohani777@gmail.com",
         "password": "arpit"
+    },
+    "car": {
+        "name": "CarBazzar",
+        "username": "car",
+        "email": "cartol2964@gmail.com",
+        "password": "Carbazzar"
+    },
+    "harshit": {
+        "name": "HARSHIT UPRETI ",
+        "username": "harshit",
+        "email": "harshitupreti15@gmail.com",
+        "password": "harshit"
+    },
+    "mohan_upreti": {
+        "name": "MOHAN UPRETI",
+        "username": "mohan_upreti",
+        "email": "mohanupreti1234@gmail.com",
+        "password": "Mohan"
+    },
+    "himanshi": {
+        "name": "HIMANSHI KARAKOTI",
+        "username": "himanshi",
+        "email": "himanshikarakoti320@gmail.com",
+        "password": "himanshi"
+    },
+    "tejas": {
+        "name": "TEJAS UPRETI ",
+        "username": "tejas",
+        "email": "tejasupreti2964@gmail.com",
+        "password": "tejas"
     }
 }

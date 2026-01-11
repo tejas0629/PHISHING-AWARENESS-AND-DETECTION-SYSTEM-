@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/tejas-upreti/Desktop/phishing_full_project_with_css/venv
+set -gx VIRTUAL_ENV '/home/tejas-upreti/Desktop/Phishing Awareness complete project ,report,presentation/phishing awareness and detectition system/venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

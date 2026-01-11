@@ -15,14 +15,11 @@
 }
 *{box-sizing:border-box}
 body{
-   margin:0;
+  margin:0;
   font-family:Montserrat,sans-serif;
   background:linear-gradient(135deg,#0f172a,#020617);
   color:#e5e7eb;
-
 }
-
-/* HEADER */
 header{
   display:flex;
   justify-content:space-between;
@@ -38,8 +35,6 @@ header{
   border:none;
   cursor:pointer;
 }
-
-/* CARD */
 .card{
   background:var(--card);
   padding:30px;
@@ -47,14 +42,12 @@ header{
   max-width:700px;
   margin:30px auto;
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 input{
   width:80%;
   padding:14px;
   border-radius:25px;
   border:none;
-  font-size:16px;
 }
 button.scan{
   margin-top:15px;
@@ -66,101 +59,38 @@ button.scan{
   font-weight:700;
   cursor:pointer;
 }
-
-/* RESULT */
-.result{
-  margin-top:25px;
-  padding:20px;
-  border-radius:15px;
-}
+.result{margin-top:25px;padding:20px;border-radius:15px}
 .safe{background:#d9fbe3;color:#145a32}
 .danger{background:#fde2e2;color:#7b241c}
 
-/* BLINK */
-body.blink-safe{animation:blinkGreen 1s 3}
-body.blink-danger{animation:blinkRedBlue .6s 4}
-@keyframes blinkGreen{
-  0%,100%{background:var(--bg)}
-  50%{background:#2ecc71}
-}
-@keyframes blinkRedBlue{
-  0%{background:#ff4c4c}
-  50%{background:#3498db}
-  100%{background:#ff4c4c}
-}
-
-/* FULLSCREEN RESULT */
-.result-overlay{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:64px;
-  font-weight:800;
-  z-index:9999;
-  animation:fadeOut 4s forwards;
-}
-.result-overlay.safe{background:rgba(46,204,113,.95)}
-.result-overlay.danger{
-  background:linear-gradient(45deg,rgba(255,76,76,.95),rgba(52,152,219,.95))
-}
-@keyframes fadeOut{
-  0%,80%{opacity:1}
-  100%{opacity:0;visibility:hidden}
-}
-
-/* LOADING */
-.loading-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.75);
+/* SUMMARY MODAL */
+#summaryModal{
   display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  z-index:10000;
   align-items:center;
   justify-content:center;
-  z-index:9998;
 }
-.loading-box{
-  background:white;
-  color:#222;
-  padding:30px;
+#summaryBox{
+  background:var(--card);
+  padding:25px;
   border-radius:20px;
-  width:320px;
-  text-align:center;
+  width:90%;
+  max-width:900px;
 }
-.magnifier{
-  font-size:45px;
-  animation:move 1.5s infinite linear;
-}
-@keyframes move{
-  0%{transform:translateX(-20px)}
-  50%{transform:translateX(20px)}
-  100%{transform:translateX(-20px)}
-}
-.progress{
+table{
   width:100%;
-  height:10px;
-  background:#eee;
-  border-radius:10px;
-  overflow:hidden;
+  border-collapse:collapse;
   margin-top:15px;
 }
-.bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#ff4c4c,#ff9f1c);
-  transition:width .4s ease;
+th,td{
+  padding:8px;
+  border:1px solid #333;
 }
-
-/* FOOTER */
+th{background:#7b2626}
 footer{text-align:center;margin:40px}
-.about{
-  padding:10px 25px;
-  border-radius:25px;
-  background:#3f2b2b;
-  border:none;
-  color:white;
-}
 </style>
 </head>
 
@@ -168,15 +98,15 @@ footer{text-align:center;margin:40px}
 
 <header>
   <h1>URL Scanner</h1>
-  <button class="logout" onclick="location.href='/logout'">Logout</button>
+  <button class="logout" type="button" onclick="location.href='/logout'">Logout</button>
+  
 </header>
 
 <div class="card">
 <form method="POST" action="/scan_url" onsubmit="return startScan()">
-
   <input name="url_input" placeholder="Enter website URL" required>
   <br>
-  <button class="scan">Scan URL</button>
+  <button class="scan" type="submit">Scan URL</button>
 </form>
 
 {% if result %}
@@ -184,89 +114,61 @@ footer{text-align:center;margin:40px}
   <h3>{{ result|upper }}</h3>
   <p>{{ scanned_url }}</p>
 </div>
-
-{% if result=='safe' %}
-<a href="{{ scanned_url }}" target="_blank"><button class="scan">Visit Website</button></a>
-{% endif %}
 {% endif %}
 </div>
 
 <footer>
-<button class="about" onclick="location.href='/aboutus'">About Us</button>
+<button type="button" class="scan" onclick="openSummary()">📊 View Detection Summary</button>
+<br><br>
+ <div style="text-align:center;margin-top:40px">
+<a href="/home" class="back-btn">⬅ Back to Home</a>
+</div>
+
+</div>
+
+
 </footer>
 
-{% if result %}
-<div class="result-overlay {{ result }}">
-  {{ '✅ SAFE' if result=='safe' else '⚠️ SUSPICIOUS' }}
-</div>
-<script>
-document.body.classList.add("blink-{{ result }}");
-setTimeout(()=>document.body.classList.remove("blink-{{ result }}"),4000);
-</script>
-{% endif %}
+<!-- SUMMARY MODAL -->
+<div id="summaryModal">
+  <div id="summaryBox">
+    <h2 style="text-align:center">Detection Summary</h2>
 
-<div class="loading-overlay" id="loading">
-  <div class="loading-box">
-    <div class="magnifier">🔍</div>
-    <p id="step">Analyzing URL…</p>
-    <div class="progress"><div class="bar" id="bar"></div></div>
+    <table>
+      <tr>
+        <th>#</th>
+        <th>URL</th>
+        <th>Status</th>
+      </tr>
+      {% for item in history %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td style="word-break:break-all">{{ item.url }}</td>
+        <td class="{{ item.status }}">
+
+          {{ item.status|upper }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div style="text-align:center;margin-top:15px;">
+      <form method="POST" action="/export_pdf" style="display:inline;">
+        <button class="scan" type="submit">📄 Export as PDF</button>
+      </form>
+      <button type="button" class="scan" onclick="closeSummary()">Close</button>
+    </div>
   </div>
 </div>
 
-<audio id="siren">
-  <source src="/static/loud.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-let unlocked=false;
-function startScan(){
-  const overlay=document.getElementById("loading");
-  const bar=document.getElementById("bar");
-  const step=document.getElementById("step");
-  overlay.style.display="flex";
-
-  const steps=[
-    "Analyzing URL…",
-    "Checking DNS…",
-    "Inspecting redirects…",
-    "Detecting phishing…",
-    "Finalizing…"
-  ];
-
-  let i=0;
-  const int=setInterval(()=>{
-    step.textContent=steps[i%steps.length];
-    bar.style.width=(i+1)*20+"%";
-    i++;
-  },600);
-
-  if(!unlocked){
-    const s=document.getElementById("siren");
-    s.play().catch(()=>{});
-    s.pause();
-    unlocked=true;
-  }
-
-  setTimeout(()=>{
-    clearInterval(int);
-    document.forms[0].submit();
-  },3000);
-
-  return false;
+function openSummary(){
+  document.getElementById("summaryModal").style.display="flex";
+}
+function closeSummary(){
+  document.getElementById("summaryModal").style.display="none";
 }
 </script>
-
-{% if result=='suspicious' %}
-<script>
-const s=document.getElementById("siren");
-s.currentTime=0;
-s.play().catch(()=>{});
-setTimeout(()=>s.pause(),3000);
-</script>
-{% endif %}
-<div style="margin-top: 20px; text-align: center;">
-    <a href="/home" class="back-home-btn">⬅ Back to Home</a>
-</div>
 
 </body>
 </html>
