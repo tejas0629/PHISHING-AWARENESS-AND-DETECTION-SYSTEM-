@@ -18,5 +18,105 @@
     {
         "url": "https://youtube.com",
         "status": "safe"
+    },
+    {
+        "url": "http://thisdomaindoesnotexist1234.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://secure-login.xyz",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://secure-login.xyz",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://secure-login.xyz",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://secure-login.xyz",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://secure-login.xyz",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://a.b.c.d.e.f.example.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://YOUTUBE.COM",
+        "status": "safe"
+    },
+    {
+        "url": "https://YOUTUBE.COM",
+        "status": "safe"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://a.b.c.d.e.f.example.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://fakebank123.info",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "http://fakebank123.info",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://amazon.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://amazzon.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://gmai1.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://microsoft.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://tejas.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://multimovies.email/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.hackerearth.com/challenges/college/entry-test-3nd-year-test/",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.hackerearth.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.linkedin.com/in/tejas-upreti?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.linkedin.com/checkpoint/challenge/AgFqMIEdhlHGxgAAAZvA66ab5C8aGVz227J__RMogkPaniMNnB61TPO5GdpjiltenOB5aCAPbZsOy8TI9yp0RvY-DpO4DQ?ut=3bq2oyUQmCLI41",
+        "status": "suspicious"
     }
 ]

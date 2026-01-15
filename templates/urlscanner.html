@@ -91,6 +91,15 @@ th,td{
 }
 th{background:#7b2626}
 footer{text-align:center;margin:40px}
+.back-btn{
+  display:inline-block;
+  margin-top:15px;
+  padding:8px 15px;
+  background:#3f2b2b;
+  border-radius:25px;
+  color:white;
+  text-decoration:none;
+}
 </style>
 </head>
 
@@ -99,34 +108,47 @@ footer{text-align:center;margin:40px}
 <header>
   <h1>URL Scanner</h1>
   <button class="logout" type="button" onclick="location.href='/logout'">Logout</button>
-  
 </header>
 
 <div class="card">
-<form method="POST" action="/scan_url" onsubmit="return startScan()">
-  <input name="url_input" placeholder="Enter website URL" required>
-  <br>
-  <button class="scan" type="submit">Scan URL</button>
-</form>
+  <form method="POST" action="/scan_url" onsubmit="return startScan()">
+    <input name="url_input" placeholder="Enter website URL" required>
+    <br>
+    <button class="scan" type="submit">Scan URL</button>
+  </form>
 
-{% if result %}
-<div class="result {{ result }}">
-  <h3>{{ result|upper }}</h3>
-  <p>{{ scanned_url }}</p>
-</div>
-{% endif %}
+  {% if result %}
+  <div class="result {{ result }}">
+    <h3>{{ result|upper }}</h3>
+    <p>{{ scanned_url }}</p>
+
+    {% if result == 'safe' %}
+    <a href="{{ scanned_url }}" target="_blank">
+      <button class="scan" type="button">🌐 Visit Website</button>
+    </a>
+    {% endif %}
+
+    {% if result == 'suspicious' and reasons %}
+    <div class="danger" style="margin-top:15px;text-align:left">
+      <h4>⚠️ Why this URL is suspicious:</h4>
+      <ul>
+        {% for r in reasons %}
+          <li>{{ r }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Back to Home -->
+  <div style="text-align:center;margin-top:30px;">
+    <a href="/home" class="back-btn">⬅ Back to Home</a>
+  </div>
 </div>
 
 <footer>
-<button type="button" class="scan" onclick="openSummary()">📊 View Detection Summary</button>
-<br><br>
- <div style="text-align:center;margin-top:40px">
-<a href="/home" class="back-btn">⬅ Back to Home</a>
-</div>
-
-</div>
-
-
+  <button type="button" class="scan" onclick="openSummary()">📊 View Detection Summary</button>
 </footer>
 
 <!-- SUMMARY MODAL -->
@@ -145,7 +167,6 @@ footer{text-align:center;margin:40px}
         <td>{{ loop.index }}</td>
         <td style="word-break:break-all">{{ item.url }}</td>
         <td class="{{ item.status }}">
-
           {{ item.status|upper }}
         </td>
       </tr>
@@ -169,6 +190,102 @@ function closeSummary(){
   document.getElementById("summaryModal").style.display="none";
 }
 </script>
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-box">
+    <div class="magnifier">🔍</div>
+    <p id="step">Analyzing URL…</p>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+</div>
+
+<style>
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.loading-box{
+  background:white;
+  color:#222;
+  padding:30px;
+  border-radius:20px;
+  width:320px;
+  text-align:center;
+}
+.magnifier{
+  font-size:45px;
+  animation:move 1.5s infinite linear;
+}
+@keyframes move{
+  0%{transform:translateX(-20px)}
+  50%{transform:translateX(20px)}
+  100%{transform:translateX(-20px)}
+}
+.progress{
+  width:100%;
+  height:10px;
+  background:#eee;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:15px;
+}
+.bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#ff4c4c,#ff9f1c);
+  transition:width .4s ease;
+}
+</style>
+
+<script>
+let unlocked=false;
+function startScan(){
+  const overlay=document.getElementById("loading");
+  const bar=document.getElementById("bar");
+  const step=document.getElementById("step");
+  overlay.style.display="flex";
+
+  const steps=[
+    "Analyzing URL…",
+    "Checking DNS…",
+    "Inspecting redirects…",
+    "Detecting phishing…",
+    "Finalizing…"
+  ];
+
+  let i=0;
+  const int=setInterval(()=>{
+    step.textContent=steps[i%steps.length];
+    bar.style.width=(i+1)*20+"%";
+    i++;
+  },600);
+
+  // Unlock siren / audio only once
+  if(!unlocked){
+    const s=document.getElementById("siren");
+    s.play().catch(()=>{});
+    s.pause();
+    unlocked=true;
+  }
+
+  // Submit form after animation
+  setTimeout(()=>{
+    clearInterval(int);
+    document.forms[0].submit();
+  }, 3000);
+
+  return false;
+}
+</script>
+
+<audio id="siren">
+  <source src="/static/loud.mp3" type="audio/mpeg">
+</audio>
 
 </body>
 </html>

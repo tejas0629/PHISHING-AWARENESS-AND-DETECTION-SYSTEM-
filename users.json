@@ -30,16 +30,22 @@
         "email": "mohanupreti1234@gmail.com",
         "password": "Mohan"
     },
-    "himanshi": {
-        "name": "HIMANSHI KARAKOTI",
-        "username": "himanshi",
-        "email": "himanshikarakoti320@gmail.com",
-        "password": "himanshi"
-    },
     "tejas": {
         "name": "TEJAS UPRETI ",
         "username": "tejas",
         "email": "tejasupreti2964@gmail.com",
         "password": "tejas"
+    },
+    "himanshi": {
+        "name": "Himanshi karakoti",
+        "username": "himanshi",
+        "email": "himanshikarakoti320@gmail.com",
+        "password": "hk200@"
+    },
+    "bhaumik": {
+        "name": "bhaumik pandey ",
+        "username": "bhaumik",
+        "email": "pandeybhawesh27@gmail.com",
+        "password": "bhaumik"
     }
 }

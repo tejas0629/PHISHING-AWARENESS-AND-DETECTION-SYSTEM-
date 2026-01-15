@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 scan_report.pdf
 url.json
+nano .env.example
