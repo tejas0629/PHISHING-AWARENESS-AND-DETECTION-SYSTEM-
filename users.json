@@ -31,10 +31,10 @@
         "password": "Mohan"
     },
     "tejas": {
-        "name": "TEJAS UPRETI ",
+        "name": "Tejas ",
         "username": "tejas",
-        "email": "tejasupreti2964@gmail.com",
-        "password": "tejas"
+        "email": "pahadinest@gmail.com",
+        "password": "Msqr6470@"
     },
     "himanshi": {
         "name": "Himanshi karakoti",
@@ -47,5 +47,11 @@
         "username": "bhaumik",
         "email": "pandeybhawesh27@gmail.com",
         "password": "bhaumik"
+    },
+    "johnd": {
+        "name": "John Doe",
+        "username": "johnd",
+        "email": "techknowcyte@gmail.com",
+        "password": "asdf123"
     }
 }

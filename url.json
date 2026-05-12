@@ -118,5 +118,37 @@
     {
         "url": "https://www.linkedin.com/checkpoint/challenge/AgFqMIEdhlHGxgAAAZvA66ab5C8aGVz227J__RMogkPaniMNnB61TPO5GdpjiltenOB5aCAPbZsOy8TI9yp0RvY-DpO4DQ?ut=3bq2oyUQmCLI41",
         "status": "suspicious"
+    },
+    {
+        "url": "https://tejas.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "http://fakebank123.info",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.youtube.com/",
+        "status": "safe"
+    },
+    {
+        "url": "https://youttube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://youttube.com",
+        "status": "suspicious"
+    },
+    {
+        "url": "https://www.youtube.com",
+        "status": "safe"
+    },
+    {
+        "url": "https://www.rnicrosoft.com",
+        "status": "suspicious"
     }
 ]
