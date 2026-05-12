@@ -20,7 +20,7 @@ app.secret_key = os.getenv("SECRET_KEY", "secret123")  # fallback if not set
 
 app.config.update(
     MAIL_SERVER=os.getenv("MAIL_SERVER"),
-    MAIL_PORT=587,
+    MAIL_PORT=int(os.getenv("MAIL_PORT", 587)),
     MAIL_USE_TLS=True,
     MAIL_USE_SSL=False,
     MAIL_SUPPRESS_SEND=False,
@@ -30,7 +30,7 @@ app.config.update(
     MAIL_DEFAULT_SENDER=os.getenv("MAIL_USERNAME"),
     MAIL_MAX_EMAILS=None,
     MAIL_ASCII_ATTACHMENTS=False,
-    MAIL_TIMEOUT=60
+    MAIL_TIMEOUT=int(os.getenv("MAIL_TIMEOUT", 120))
 )
 mail = Mail(app)
 # -------------------- Utilities --------------------
