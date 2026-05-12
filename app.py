@@ -32,6 +32,7 @@ app.config.update(
     MAIL_ASCII_ATTACHMENTS=False,
     MAIL_TIMEOUT=60
 )
+mail = Mail(app)
 # -------------------- Utilities --------------------
 
 def analyze_url(url, timeout=6):
