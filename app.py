@@ -20,12 +20,16 @@ app.secret_key = os.getenv("SECRET_KEY", "secret123")  # fallback if not set
 
 # Configure mail
 app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
+    MAIL_SERVER=os.getenv("MAIL_SERVER"),
+    MAIL_PORT=int(os.getenv("MAIL_PORT", 587)),
     MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
     MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
-    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD")
+    MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+    MAIL_TIMEOUT=20
 )
+print("MAIL_USERNAME:", os.getenv("MAIL_USERNAME"))
+print("MAIL_PASSWORD exists:", bool(os.getenv("MAIL_PASSWORD")))
 mail = Mail(app)
 
 # -------------------- Utilities --------------------
